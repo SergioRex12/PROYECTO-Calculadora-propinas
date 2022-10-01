@@ -88,7 +88,10 @@ function mostrarPlatillos(platillos) {
         inputCantidad.id = `producto-${platillo.id}`;
         inputCantidad.classList.add('form-control');
         inputCantidad.defaultValue = 0;
-        inputCantidad.addEventListener('change',selectCantidad);
+        inputCantidad.onchange = function() {
+            const cantidad = parseInt(inputCantidad.value);
+            agregarPlatillo({...platillo,cantidad});
+        }
 
         const agregar = document.createElement('div');
         agregar.classList.add('col-md-2');
@@ -103,62 +106,32 @@ function mostrarPlatillos(platillos) {
     });
 }
 
-function selectCantidad(e) {
-    const cantidad = Number(e.target.value);
-    //Pillamos la id del producto
-    const id = Number(e.target.id.split('-')[1]);
-    const obj = cliente.platillos.filter(e => e.id === id)
+function agregarPlatillo(producto) {
+    let {platillos} = cliente;
 
-    const div = e.target.parentElement.parentElement;
-    const nombre = div.querySelector('.col-md-4').textContent;
-    const precio = Number(div.querySelector('.fw-bold').textContent.split('$')[1]);
+    if (producto.cantidad > 0) {
 
+        //Comprueba si ya esta en el array
+        if (platillos.some( articulo => articulo.id === producto.id )) {
+            //El articulo ya existe
+            const pedidoActualizado = platillos.map(articulo => {
+                if ( articulo.id === producto.id ) {
+                    articulo.cantidad = producto.cantidad;
+                }
+                return articulo;
+            })
 
-    //Agrega cuando no existe
-    if (cantidad === 1) {
+            cliente.platillos = [...pedidoActualizado];
 
-        //Si ya existe borramos 1
-        if (cliente.platillos.some(i => i.id === id)) {
-            cliente.platillos[id - 1].cantidad -= 1; 
-            console.log(cliente);
-            return;
-        };
-
-        cliente.platillos.push({
-            id: id,
-            nombre: nombre,  
-            precio: precio,
-            cantidad: 1   
-        })
-
-        console.log(cliente);
-        console.log("If agrega no existe");
-        return;
-    }
-
-    //Agrega cuando existe y agregas
-    if ((cantidad > 1) && (obj.cantidad < cantidad)) {
-
-        obj.cantidad += 1; 
-        console.log(cliente);
-        console.log("If agrega existe agrega");
-
-        return;
+        } else {
+            //El articulo no existe
+            cliente.platillos = [...platillos, producto];
+        }
     } else {
-        obj.cantidad -= 1; 
-        console.log("If agrega existe borra");
-        console.log(cliente);
-
-
-    }
-
-    //Borra
-    if (cantidad === 0) {
-        console.log("If borra");
-
-        cliente.platillos = cliente.platillos.filter((item) => item.id !== id)
-        console.log(cliente);
-
+        //Borramos el producto
+        const lista = platillos.filter(articulo => articulo.id !== producto.id);
+        
+        cliente.platillos = lista;
     }
 
 }
