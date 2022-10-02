@@ -209,7 +209,7 @@ function actualizarResumen() {
         //Precio
         const precioEl = document.createElement('p');
         precioEl.classList.add('fw-bold');
-        precioEl.textContent = 'Precio: ';
+        precioEl.textContent = 'Precio unitario: ';
 
         const precioElValor = document.createElement('span');
         precioElValor.classList.add('fw-normal');
@@ -218,7 +218,7 @@ function actualizarResumen() {
         //SubTotal valor
         const subTotalEl = document.createElement('p');
         subTotalEl.classList.add('fw-bold');
-        subTotalEl.textContent = 'Precio: ';
+        subTotalEl.textContent = 'Precio total: ';
 
         const subTotalElValor = document.createElement('span');
         subTotalElValor.classList.add('fw-normal');
