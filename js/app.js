@@ -1,3 +1,4 @@
+import { db } from "../db.js";
 
 
 let cliente = {
@@ -54,14 +55,14 @@ function verificarOrden(e) {
 
 function consultarPlatillos() {
     
-    fetch("http://localhost:4000/platillos") 
+    /*fetch("http://localhost:4000/platillos") 
         .then(resultado => resultado.json())
-        .then(resultado => mostrarPlatillos(resultado))
+        .then(resultado => mostrarPlatillos(resultado))*/
 
+    mostrarPlatillos(db);
 } 
 
 function mostrarPlatillos(platillos) {
-    console.log(platillos);
 
     const zonaPlatillos = document.querySelector('#platillos .contenido'); 
 
